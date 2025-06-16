@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Push Notification Demo</title>
+  </head>
+  <body>
+    <h2>Push Notification Demo</h2>
+    <button id="notifyBtn">Send Notification</button>
+
+    <script>
+      // Register the service worker
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(() => console.log("Service Worker registered"));
+      }
+
+      document.getElementById("notifyBtn").addEventListener("click", () => {
+        // Request permission if needed
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            navigator.serviceWorker.getRegistration().then((reg) => {
+              if (reg) {
+                reg.showNotification("Hello from your web app!", {
+                  body: "This is a push-style message 🛎️",
+                  icon: "https://via.placeholder.com/96", // optional
+                  tag: "demo-notification",
+                });
+              }
+            });
+          } else {
+            alert("Notification permission denied.");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
