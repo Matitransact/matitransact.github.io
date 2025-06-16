@@ -5,3 +5,9 @@ self.addEventListener("notificationclick", function (event) {
     clients.openWindow("https://matitransact.github.io/notify.html") // redirect on click (optional)
   );
 });
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});

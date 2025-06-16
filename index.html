@@ -10,12 +10,30 @@
     <h2>Push Notification Demo</h2>
     <button id="notifyBtn">Send Notification</button>
 
+    <button onclick="checkForUpdate()">Check for updates and update the app!</button>
+
     <script>
       // Register the service worker
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
           .register("sw.js")
           .then(() => console.log("Service Worker registered"));
+      }
+
+      function checkForUpdate() {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.getRegistration().then((reg) => {
+            if (reg) {
+              reg.update(); // ask the browser to check for an update
+              if (reg.waiting) {
+                reg.waiting.postMessage({ type: "SKIP_WAITING" });
+                alert("A new version is being activated!");
+              } else {
+                alert("You’re already using the latest version.");
+              }
+            }
+          });
+        }
       }
 
       document.getElementById("notifyBtn").addEventListener("click", () => {
