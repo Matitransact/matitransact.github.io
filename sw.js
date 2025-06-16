@@ -2,6 +2,6 @@
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
   event.waitUntil(
-    clients.openWindow("https://example.com") // redirect on click (optional)
+    clients.openWindow("https://matitransact.github.io/notification.html") // redirect on click (optional)
   );
 });
