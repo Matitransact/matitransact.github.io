@@ -37,6 +37,12 @@
       }
 
       document.getElementById("notifyBtn").addEventListener("click", () => {
+        if (window.AndroidApp) {
+          window.AndroidApp.notifyFromWeb("Hello from the web!");
+        } else {
+          alert("Running in a browser, not Android.");
+        }
+
         // Request permission if needed
         Notification.requestPermission().then((permission) => {
           if (permission === "granted") {
@@ -57,7 +63,42 @@
         });
       });
 
-      // TODO: make bridge between webapp and mobile app.
+      // ### bridge between webview via react native and webapp ###
+
+      // This function will be called by the React Native app via WebView JS injection
+      window.onNativePushTokenReceived = function (token) {
+        console.log("Received native push token from wrapper app:", token);
+
+        // Send it to your backend API
+        fetch("https://your-backend.com/api/store-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Add Authorization header here if needed
+          },
+          body: JSON.stringify({
+            token: token,
+            platform: "native",
+          }),
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to store token");
+            return res.json();
+          })
+          .then((data) => {
+            console.log("Token stored successfully:", data);
+          })
+          .catch((err) => {
+            console.error("Error sending token to backend:", err);
+          });
+      };
+      /*
+      GitHub Pages cannot run backend code, so:
+
+You must point the fetch() call to a real backend you control (like Firebase Cloud Functions, Supabase, Vercel Serverless Functions, Node.js/Express, etc.)
+
+The push token won’t be useful unless you store it on a backend so you can send push messages later
+*/
     </script>
   </body>
 </html>
