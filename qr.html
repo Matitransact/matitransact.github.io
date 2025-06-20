@@ -26,15 +26,23 @@
       let context = canvas.getContext("2d");
 
       function startScanner() {
-        navigator.mediaDevices
-          .getUserMedia({ video: { facingMode: "environment" } })
-          .then((stream) => {
-            video.srcObject = stream;
-            requestAnimationFrame(scan);
-          })
-          .catch((err) => {
-            alert("Camera error: " + err.message);
-          });
+        if (
+          typeof Android !== "undefined" &&
+          Android !== null &&
+          typeof Android.openQrScanner === "function"
+        ) {
+          Android.openQrScanner();
+        } else {
+          navigator.mediaDevices
+            .getUserMedia({ video: { facingMode: "environment" } })
+            .then((stream) => {
+              video.srcObject = stream;
+              requestAnimationFrame(scan);
+            })
+            .catch((err) => {
+              alert("Camera error: " + err.message);
+            });
+        }
       }
 
       function scan() {
