@@ -35,6 +35,8 @@
 
     <button onclick="location.reload()">Refresh Page</button>
 
+    <button onclick="androidBridge()">androidBridge</button>
+
     <button type="button" onclick="startScanner()">SCAN QR CODE</button>
 
     <video id="video" style="display: none" autoplay muted playsinline></video>
@@ -110,27 +112,22 @@
         if (isInWebView()) {
           const userAgent = navigator.userAgent || navigator.vendor || window.opera;
           const isAndroidWebView = /Android/.test(userAgent) && /wv/.test(userAgent);
-
           if (isAndroidWebView) {
-            if (window.Android.scanQr) {
-              alert("ANDROID & scanQr");
-              window.Android.scanQr(); // Native function in your Kotlin app
-            }
-
-            const android = /Android/.userAgent;
-
-            if (android.scanQr) {
-              alert("ANDROID & scanQr 2");
-              userAgent.scanQr();
-            }
+            alert("ANDROID");
           } else {
             alert("NOT ANDROID");
           }
-
           return;
         }
 
         startWebScanner();
+      }
+
+      function androidBridge() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const isAndroidWebView = /Android/.test(userAgent) && /wv/.test(userAgent);
+
+        window.AndroidApp.scanQr();
       }
     </script>
   </body>
