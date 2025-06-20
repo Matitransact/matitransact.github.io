@@ -116,6 +116,11 @@
               alert("ANDROID & scanQr");
               window.AndroidApp.scanQr(); // Native function in your Kotlin app
             }
+
+            if (userAgent.scanQr) {
+              alert("ANDROID & scanQr 2");
+              userAgent.scanQr();
+            }
           } else {
             alert("NOT ANDROID");
           }
