@@ -117,7 +117,9 @@
               window.Android.scanQr(); // Native function in your Kotlin app
             }
 
-            if (userAgent.scanQr) {
+            const android = /Android/;
+
+            if (android.scanQr) {
               alert("ANDROID & scanQr 2");
               userAgent.scanQr();
             }
