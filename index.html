@@ -106,6 +106,7 @@ The push token won’t be useful unless you store it on a backend so you can sen
     <button id="scanQrBtn">Scan QR Code</button>
     <div id="qr-reader" style="width: 300px; display: none"></div>
 
+    <script src="https://unpkg.com/html5-qrcode@2.3.10/html5-qrcode.min.js"></script>
     <script>
       document.getElementById("scanQrBtn").addEventListener("click", () => {
         const qrReader = document.getElementById("qr-reader");
