@@ -108,7 +108,15 @@ The push token won’t be useful unless you store it on a backend so you can sen
 
     <script src="https://unpkg.com/html5-qrcode@2.3.10/html5-qrcode.min.js"></script>
     <script>
-      document.getElementById("scanQrBtn").addEventListener("click", () => {alert("button works")});
+      if (typeof Html5Qrcode === "undefined") {
+        alert("QR library failed to load");
+      } else {
+        console.log("QR library loaded!");
+      }
+
+      document.getElementById("scanQrBtn").addEventListener("click", () => {
+        alert("button works");
+      });
     </script>
   </body>
 </html>
