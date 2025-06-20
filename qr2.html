@@ -26,8 +26,11 @@
       }
 
       function stopWebScanner() {
-        stream.getTracks().forEach((track) => track.stop());
-        video.style.display = "none";
+        const stream = video.srcObject;
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+          video.style.display = "none";
+        }
       }
 
       function startWebScanner() {
