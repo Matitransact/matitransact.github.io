@@ -8,8 +8,21 @@
     <title>QR 2</title>
 
     <script>
+      function isInWebView() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        const standalone =
+          window.matchMedia("(display-mode: standalone)").matches ||
+          window.navigator.standalone === true;
+
+        const isIOSWebView = /\b(iPhone|iPod|iPad)\b/.test(userAgent) && !/Safari/.test(userAgent);
+        const isAndroidWebView = /Android/.test(userAgent) && /wv/.test(userAgent);
+
+        return isIOSWebView || isAndroidWebView || standalone;
+      }
+
       const startScanner = () => {
-        alert("STARTED");
+        isInWebView() ? alert("in a webview") : alert("not in webview");
       };
     </script>
   </head>
