@@ -6,7 +6,8 @@
     <title>Push Notification Demo</title>
     <link rel="manifest" href="/manifest.json" />
 
-    <script src="https://unpkg.com/html5-qrcode@2.3.10/html5-qrcode.min.js"></script>
+    <!-- <script src="https://unpkg.com/html5-qrcode@2.3.10/html5-qrcode.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.10/html5-qrcode.min.js"></script>
   </head>
   <body>
     <h2>Push Notification Demo</h2>
@@ -106,7 +107,6 @@ The push token won’t be useful unless you store it on a backend so you can sen
     <button id="scanQrBtn">Scan QR Code</button>
     <div id="qr-reader" style="width: 300px; display: none"></div>
 
-    <script src="https://unpkg.com/html5-qrcode@2.3.10/html5-qrcode.min.js"></script>
     <script>
       if (typeof Html5Qrcode === "undefined") {
         alert("QR library failed to load");
