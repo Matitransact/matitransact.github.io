@@ -127,12 +127,13 @@
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
         const isAndroidWebView = /Android/.test(userAgent) && /wv/.test(userAgent);
 
-        scanQr() ||
-          userAgent.scanQr() ||
-          /Android/.scanQr() ||
-          window.AndroidApp.scanQr() ||
-          window.navigator.scanQr() ||
-          window.navigator.AndroidApp.scanQr();
+        if (window.Android) {
+          alert("window.Android");
+        }
+
+        if (window.AndroidApp) {
+          alert("window.AndroidApp");
+        }
       }
     </script>
   </body>
