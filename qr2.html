@@ -26,8 +26,8 @@
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
         video.style.display = "block";
-        // video.style.width = "90%";
-        // video.style.margin = "16px auto";
+        video.style.width = "90%";
+        video.style.margin = "16px auto";
         navigator.mediaDevices
           .getUserMedia({ video: { facingMode: "environment" } })
           .then((stream) => {
@@ -43,8 +43,8 @@
                 if (code) {
                   stream.getTracks().forEach((track) => track.stop());
                   video.style.display = "none";
-                  alert("QR Code: " + code.data);
-                  // window.location.href = code.data;
+                  // alert("QR Code: " + code.data);
+                  window.location.href = code.data;
                   return;
                 }
               }
@@ -62,7 +62,7 @@
           return;
         }
 
-        startWebScanner();
+        WebScanner();
       }
     </script>
   </head>
