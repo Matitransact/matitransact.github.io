@@ -108,31 +108,7 @@ The push token won’t be useful unless you store it on a backend so you can sen
 
     <script src="https://unpkg.com/html5-qrcode@2.3.10/html5-qrcode.min.js"></script>
     <script>
-      document.getElementById("scanQrBtn").addEventListener("click", () => {
-        const qrReader = document.getElementById("qr-reader");
-        qrReader.style.display = "block"; // Show scanner UI
-
-        const html5QrCode = new Html5Qrcode("qr-reader");
-        const config = { fps: 10, qrbox: 250 };
-
-        html5QrCode.start(
-          { facingMode: "environment" }, // use back camera
-          config,
-          (decodedText, decodedResult) => {
-            console.log(`QR Code detected: ${decodedText}`);
-            alert(`QR Code: ${decodedText}`);
-
-            // Stop scanning after successful scan
-            html5QrCode.stop().then(() => {
-              qrReader.style.display = "none";
-            });
-          },
-          (errorMessage) => {
-            // Optionally handle scan failure (e.g. log error)
-            console.warn(`Scan error: ${errorMessage}`);
-          }
-        );
-      });
+      document.getElementById("scanQrBtn").addEventListener("click", () => {alert("button works")});
     </script>
   </body>
 </html>
