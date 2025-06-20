@@ -72,6 +72,8 @@
         navigator.mediaDevices
           .getUserMedia({ video: { facingMode: "environment" } })
           .then((stream) => {
+            console.log("0");
+
             video.srcObject = stream;
 
             console.log("1");
