@@ -19,9 +19,13 @@
         flex-direction: column;
         gap: 20px;
       }
+      body > * {
+        margin: 8px auto 0;
+      }
       button {
         padding: 16px;
         margin-top: 8px;
+        width: fit-content;
       }
     </style>
   </head>
@@ -97,6 +101,7 @@
             requestAnimationFrame(scanWeb);
           })
           .catch((err) => {
+            video.style.display = "none";
             alert("Camera error: " + err.message);
           });
       }
