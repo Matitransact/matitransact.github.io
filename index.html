@@ -15,6 +15,9 @@
 
     <button onclick="checkForUpdate()">Check for updates and update the app!</button>
 
+    <button id="scanQrBtn">Scan QR Code</button>
+    <div id="qr-reader" style="width: 300px; display: none"></div>
+
     <script>
       // Register the service worker
       if ("serviceWorker" in navigator) {
@@ -97,25 +100,29 @@
       };
       /*
       GitHub Pages cannot run backend code, so:
+      You must point the fetch() call to a real backend you control (like Firebase Cloud Functions, Supabase, Vercel Serverless Functions, Node.js/Express, etc.)
+      The push token won’t be useful unless you store it on a backend so you can send push messages later
+      */
 
-You must point the fetch() call to a real backend you control (like Firebase Cloud Functions, Supabase, Vercel Serverless Functions, Node.js/Express, etc.)
+      const btn = document.getElementById("scanQrBtn");
+      const qrReader = document.getElementById("qr-reader");
 
-The push token won’t be useful unless you store it on a backend so you can send push messages later
-*/
-    </script>
+      btn.addEventListener("click", () => {
+        qrReader.style.display = "block";
+        const html5QrCode = new Html5Qrcode("qr-reader");
 
-    <button id="scanQrBtn">Scan QR Code</button>
-    <div id="qr-reader" style="width: 300px; display: none"></div>
-
-    <script>
-      if (typeof Html5Qrcode === "undefined") {
-        alert("QR library failed to load");
-      } else {
-        console.log("QR library loaded!");
-      }
-
-      document.getElementById("scanQrBtn").addEventListener("click", () => {
-        alert("button works");
+        html5QrCode.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: 250 },
+          (decodedText) => {
+            alert("Scanned: " + decodedText);
+            html5QrCode.stop();
+            qrReader.style.display = "none";
+          },
+          (err) => {
+            console.warn(err);
+          }
+        );
       });
     </script>
   </body>
