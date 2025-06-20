@@ -108,17 +108,14 @@
 
       function startScanner() {
         if (isInWebView()) {
-          // alert("you are in a webview");
-
           const userAgent = navigator.userAgent || navigator.vendor || window.opera;
           const isAndroidWebView = /Android/.test(userAgent) && /wv/.test(userAgent);
 
           if (isAndroidWebView) {
-            // alert("ANDROID");
-
-            userAgent.scanQr && alert("ANDROID && scanQr available");
-
-            window.AndroidApp.scanQr(); // Native function in your Kotlin app
+            if (window.AndroidApp.scanQr) {
+              alert("ANDROID & scanQr");
+              window.AndroidApp.scanQr(); // Native function in your Kotlin app
+            }
           } else {
             alert("NOT ANDROID");
           }
