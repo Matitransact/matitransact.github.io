@@ -113,9 +113,12 @@
           const userAgent = navigator.userAgent || navigator.vendor || window.opera;
           const isAndroidWebView = /Android/.test(userAgent) && /wv/.test(userAgent);
 
-          if (isAndroidWebView /*&& window.AndroidApp.scanQr*/) {
+          if (isAndroidWebView) {
             alert("ANDROID");
-            // window.AndroidApp.scanQr(); // Native function in your Kotlin app
+
+            userAgent.scanQr && alert("scanQr available");
+
+            window.AndroidApp.scanQr(); // Native function in your Kotlin app
           } else {
             alert("NOT ANDROID");
           }
