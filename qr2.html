@@ -50,7 +50,7 @@
         const stream = video.srcObject;
         if (stream) {
           stream.getTracks().forEach((track) => track.stop());
-          video.style.display = "none";
+          // video.style.display = "none";
           video.srcObject = null;
         }
       }
@@ -65,7 +65,7 @@
           .then((stream) => {
             video.srcObject = stream;
 
-            video.play();
+            // video.play();
 
             requestAnimationFrame(scanWeb);
           })
