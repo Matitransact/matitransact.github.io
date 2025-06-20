@@ -29,6 +29,8 @@
 
       function scanWeb() {
         if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          console.log("3");
+
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -36,7 +38,9 @@
           let imageData = context.getImageData(0, 0, canvas.width, canvas.height);
           let code = jsQR(imageData.data, imageData.width, imageData.height);
 
+          console.log("4");
           if (code) {
+            console.log("5");
             window.location.href = code.data;
             stopWebScanner();
             return;
@@ -47,11 +51,14 @@
       }
 
       function stopWebScanner() {
+        console.log("6");
         const stream = video.srcObject;
         if (stream) {
+          console.log("7");
           stream.getTracks().forEach((track) => track.stop());
           // video.style.display = "none";
           video.srcObject = null;
+          console.log("8");
         }
       }
 
@@ -60,14 +67,20 @@
         // video.style.width = "90%";
         // video.style.margin = "16px auto";
 
+        console.log("starting web scanner.");
+
         navigator.mediaDevices
           .getUserMedia({ video: { facingMode: "environment" } })
           .then((stream) => {
             video.srcObject = stream;
 
+            console.log("1");
+
             // video.play();
 
             requestAnimationFrame(scanWeb);
+
+            console.log("2");
           })
           .catch((err) => {
             alert("Camera error: " + err.message);
