@@ -73,8 +73,6 @@
         navigator.mediaDevices
           .getUserMedia({ video: { facingMode: "environment" } })
           .then((stream) => {
-            console.log("stream:", stream);
-
             video.srcObject = stream;
 
             requestAnimationFrame(scanWeb);
