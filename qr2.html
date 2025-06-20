@@ -21,34 +21,51 @@
         return isIOSWebView || isAndroidWebView || standalone;
       }
 
-      function WebScanner() {
-        const video = document.getElementById("video");
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
+      let video = document.getElementById("video");
+      let canvas = document.createElement("canvas");
+      let context = canvas.getContext("2d");
+
+      function scanWeb() {
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          let imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+          let code = jsQR(imageData.data, imageData.width, imageData.height);
+
+          if (code) {
+            window.location.href = code.data;
+            stopWebScanner();
+            return;
+          }
+        }
+
+        requestAnimationFrame(scanWeb);
+      }
+
+      function stopWebScanner() {
+        const stream = video.srcObject;
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+          video.style.display = "none";
+          video.srcObject = null;
+        }
+      }
+
+      function startWebScanner() {
         video.style.display = "block";
         video.style.width = "90%";
         video.style.margin = "16px auto";
+
         navigator.mediaDevices
           .getUserMedia({ video: { facingMode: "environment" } })
           .then((stream) => {
             video.srcObject = stream;
-            video.play();
-            requestAnimationFrame(function scan() {
-              if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                const code = jsQR(imageData.data, imageData.width, imageData.height);
-                if (code) {
-                  window.location.href = code.data;
-                  stream.getTracks().forEach((track) => track.stop());
-                  video.style.display = "none";
-                  return;
-                }
-              }
-              requestAnimationFrame(scan);
-            });
+
+            // video.play();
+
+            requestAnimationFrame(scanWeb);
           })
           .catch((err) => {
             alert("Camera error: " + err.message);
@@ -61,7 +78,7 @@
           return;
         }
 
-        WebScanner();
+        startWebScanner();
       }
     </script>
   </head>

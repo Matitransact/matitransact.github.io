@@ -29,7 +29,9 @@
         navigator.mediaDevices
           .getUserMedia({ video: { facingMode: "environment" } })
           .then((stream) => {
+
             video.srcObject = stream;
+            
             requestAnimationFrame(scan);
           })
           .catch((err) => {
