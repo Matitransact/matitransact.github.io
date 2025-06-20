@@ -110,10 +110,10 @@
         if (isInWebView()) {
           // alert("you are in a webview");
 
-          // const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-          // const isAndroidWebView = /Android/.test(userAgent) && /wv/.test(userAgent);
+          const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+          const isAndroidWebView = /Android/.test(userAgent) && /wv/.test(userAgent);
 
-          if (window.AndroidApp /*&& window.AndroidApp.scanQr*/) {
+          if (isAndroidWebView /*&& window.AndroidApp.scanQr*/) {
             alert("ANDROID");
             // window.AndroidApp.scanQr(); // Native function in your Kotlin app
           } else {
