@@ -26,23 +26,15 @@
       let context = canvas.getContext("2d");
 
       function startScanner() {
-        if (
-          typeof Android !== "undefined" &&
-          Android !== null &&
-          typeof Android.openQrScanner === "function"
-        ) {
-          Android.openQrScanner();
-        } else {
-          navigator.mediaDevices
-            .getUserMedia({ video: { facingMode: "environment" } })
-            .then((stream) => {
-              video.srcObject = stream;
-              requestAnimationFrame(scan);
-            })
-            .catch((err) => {
-              alert("Camera error: " + err.message);
-            });
-        }
+        navigator.mediaDevices
+          .getUserMedia({ video: { facingMode: "environment" } })
+          .then((stream) => {
+            video.srcObject = stream;
+            requestAnimationFrame(scan);
+          })
+          .catch((err) => {
+            alert("Camera error: " + err.message);
+          });
       }
 
       function scan() {
@@ -55,7 +47,6 @@
           let code = jsQR(imageData.data, imageData.width, imageData.height);
 
           if (code) {
-            // alert("QR Code found: " + code.data);
             window.location.href = code.data;
             stopScanner();
             return;
