@@ -2,44 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Scanner Lite</title>
-    <style>
-      #video {
-        width: 100%;
-        max-width: 400px;
-      }
-    </style>
+
+    <title>QR 2</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
   </head>
+
   <body>
     <a href="index.html"><h1>home</h1></a>
 
-    <h2>Lightweight QR Code Scanner</h2>
-    <button onclick="startScanner()">Start Scanner</button>
-    <video id="video" autoplay muted playsinline></video>
+    <button type="button" onclick="startScanner()">SCAN QR CODE</button>
+
+    <video id="video" style="display: none" autoplay muted playsinline></video>
+
     <canvas id="canvas" style="display: none"></canvas>
 
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <button onclick="location.reload()">Refresh Page</button>
+
     <script>
-      let video = document.getElementById("video");
-      let canvas = document.getElementById("canvas");
-      let context = canvas.getContext("2d");
+      function isInWebView() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-      function startScanner() {
-        navigator.mediaDevices
-          .getUserMedia({ video: { facingMode: "environment" } })
-          .then((stream) => {
+        const standalone =
+          window.matchMedia("(display-mode: standalone)").matches ||
+          window.navigator.standalone === true;
 
-            video.srcObject = stream;
+        const isIOSWebView = /\b(iPhone|iPod|iPad)\b/.test(userAgent) && !/Safari/.test(userAgent);
+        const isAndroidWebView = /Android/.test(userAgent) && /wv/.test(userAgent);
 
-            requestAnimationFrame(scan);
-          })
-          .catch((err) => {
-            alert("Camera error: " + err.message);
-          });
+        return isIOSWebView || isAndroidWebView || standalone;
       }
 
-      function scan() {
+      let video = document.getElementById("video");
+      let canvas = document.createElement("canvas");
+      let context = canvas.getContext("2d");
+
+      function scanWeb() {
         if (video.readyState === video.HAVE_ENOUGH_DATA) {
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
@@ -50,20 +50,55 @@
 
           if (code) {
             window.location.href = code.data;
-            stopScanner();
+            stopWebScanner();
             return;
           }
         }
 
-        requestAnimationFrame(scan);
+        requestAnimationFrame(scanWeb);
       }
 
-      function stopScanner() {
+      function stopWebScanner() {
         const stream = video.srcObject;
         if (stream) {
           stream.getTracks().forEach((track) => track.stop());
+          video.style.display = "none";
           video.srcObject = null;
         }
+      }
+
+      function startWebScanner() {
+        video.style.display = "block";
+        video.style.width = "90%";
+        video.style.margin = "16px auto";
+
+        navigator.mediaDevices
+          .getUserMedia({ video: { facingMode: "environment" } })
+          .then((stream) => {
+            video.srcObject = stream;
+
+            requestAnimationFrame(scanWeb);
+          })
+          .catch((err) => {
+            alert("Camera error: " + err.message);
+          });
+      }
+
+      function startScanner() {
+        if (isInWebView()) {
+          // alert("you are in a webview");
+
+          if (window.AndroidApp && window.AndroidApp.scanQr) {
+            alert("ANDROID");
+            // window.AndroidApp.scanQr(); // Native function in your Kotlin app
+          } else {
+            alert("NOT ANDROID");
+          }
+
+          return;
+        }
+
+        startWebScanner();
       }
     </script>
   </body>
