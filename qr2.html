@@ -84,7 +84,15 @@
 
       function startScanner() {
         if (isInWebView()) {
-          alert("you are in a webview");
+          // alert("you are in a webview");
+
+          if (window.AndroidApp && window.AndroidApp.scanQr) {
+            alert("ANDROID");
+            // window.AndroidApp.scanQr(); // Native function in your Kotlin app
+          } else {
+            alert("NOT ANDROID");
+          }
+
           return;
         }
 
