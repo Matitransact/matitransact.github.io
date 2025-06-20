@@ -8,10 +8,6 @@
     <title>QR 2</title>
 
     <script>
-      const video = document.getElementById("video");
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-
       function isInWebView() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -25,15 +21,10 @@
         return isIOSWebView || isAndroidWebView || standalone;
       }
 
-      function stopWebScanner() {
-        const stream = video.srcObject;
-        if (stream) {
-          stream.getTracks().forEach((track) => track.stop());
-          video.style.display = "none";
-        }
-      }
-
-      function startWebScanner() {
+      function WebScanner() {
+        const video = document.getElementById("video");
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
         video.style.display = "block";
         video.style.width = "90%";
         navigator.mediaDevices
@@ -50,7 +41,9 @@
                 const code = jsQR(imageData.data, imageData.width, imageData.height);
                 if (code) {
                   window.location.href = code.data;
-                  stopWebScanner();
+                  // Stop scanning
+                  stream.getTracks().forEach((track) => track.stop());
+                  video.style.display = "none";
                   return;
                 }
               }
