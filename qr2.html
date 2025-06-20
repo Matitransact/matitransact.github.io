@@ -7,6 +7,8 @@
 
     <title>QR 2</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
     <script>
       function isInWebView() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -86,9 +88,10 @@
   <body>
     <a href="index.html"><h1>home</h1></a>
 
-    <button onclick="startScanner()">SCAN QR CODE</button>
+    <button type="button" onclick="startScanner()">SCAN QR CODE</button>
 
-    <video id="video" style="display: none" autoplay muted playsinline></video>
+    <!-- <video id="video" style="display: none" autoplay muted playsinline></video> -->
+    <video id="video" autoplay muted playsinline></video>
 
     <canvas id="canvas" style="display: none"></canvas>
   </body>
