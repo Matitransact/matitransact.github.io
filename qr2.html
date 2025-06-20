@@ -21,9 +21,46 @@
         return isIOSWebView || isAndroidWebView || standalone;
       }
 
-      const startScanner = () => {
-        isInWebView() ? alert("in a webview") : alert("not in webview");
-      };
+      function startWebScanner() {
+        const video = document.getElementById("video");
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        video.style.display = "block";
+        navigator.mediaDevices
+          .getUserMedia({ video: { facingMode: "environment" } })
+          .then((stream) => {
+            video.srcObject = stream;
+            video.play();
+            requestAnimationFrame(function scan() {
+              if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+                if (code) {
+                  stream.getTracks().forEach((track) => track.stop());
+                  video.style.display = "none";
+                  alert("QR Code: " + code.data);
+                  return;
+                }
+              }
+              requestAnimationFrame(scan);
+            });
+          })
+          .catch((err) => {
+            alert("Camera error: " + err.message);
+          });
+      }
+
+      function startScanner() {
+        if (isInWebView()) {
+          alert("you are in a webview");
+          return;
+        }
+
+        startWebScanner();
+      }
     </script>
   </head>
 
@@ -31,5 +68,7 @@
     <a href="index.html"><h1>home</h1></a>
 
     <button onclick="startScanner()">SCAN QR CODE</button>
+
+    <video id="video" style="display: none" autoplay muted playsinline></video>
   </body>
 </html>
