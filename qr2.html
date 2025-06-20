@@ -27,6 +27,7 @@
         const context = canvas.getContext("2d");
         video.style.display = "block";
         video.style.width = "90%";
+        video.style.margin = "16px auto";
         navigator.mediaDevices
           .getUserMedia({ video: { facingMode: "environment" } })
           .then((stream) => {
@@ -40,10 +41,10 @@
                 const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
                 const code = jsQR(imageData.data, imageData.width, imageData.height);
                 if (code) {
-                  window.location.href = code.data;
-                  // Stop scanning
                   stream.getTracks().forEach((track) => track.stop());
                   video.style.display = "none";
+                  alert("QR Code: " + code.data);
+                  window.location.href = code.data;
                   return;
                 }
               }
