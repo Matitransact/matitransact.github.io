@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Push Notification Demo</title>
     <link rel="manifest" href="/manifest.json" />
+
+    <script src="https://unpkg.com/html5-qrcode@2.3.10/html5-qrcode.min.js"></script>
   </head>
   <body>
     <h2>Push Notification Demo</h2>
@@ -99,6 +101,37 @@ You must point the fetch() call to a real backend you control (like Firebase Clo
 
 The push token won’t be useful unless you store it on a backend so you can send push messages later
 */
+    </script>
+
+    <button id="scanQrBtn">Scan QR Code</button>
+    <div id="qr-reader" style="width: 300px; display: none"></div>
+
+    <script>
+      document.getElementById("scanQrBtn").addEventListener("click", () => {
+        const qrReader = document.getElementById("qr-reader");
+        qrReader.style.display = "block"; // Show scanner UI
+
+        const html5QrCode = new Html5Qrcode("qr-reader");
+        const config = { fps: 10, qrbox: 250 };
+
+        html5QrCode.start(
+          { facingMode: "environment" }, // use back camera
+          config,
+          (decodedText, decodedResult) => {
+            console.log(`QR Code detected: ${decodedText}`);
+            alert(`QR Code: ${decodedText}`);
+
+            // Stop scanning after successful scan
+            html5QrCode.stop().then(() => {
+              qrReader.style.display = "none";
+            });
+          },
+          (errorMessage) => {
+            // Optionally handle scan failure (e.g. log error)
+            console.warn(`Scan error: ${errorMessage}`);
+          }
+        );
+      });
     </script>
   </body>
 </html>
