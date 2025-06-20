@@ -47,7 +47,8 @@
           let code = jsQR(imageData.data, imageData.width, imageData.height);
 
           if (code) {
-            alert("QR Code found: " + code.data);
+            // alert("QR Code found: " + code.data);
+            window.location.href = code.data;
             stopScanner();
             return;
           }
